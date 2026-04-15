@@ -1,4 +1,5 @@
-﻿using Application_Devenir_Dev_2.Services.Interfaces;
+﻿using Application_Devenir_Dev_2.DTOS;
+using Application_Devenir_Dev_2.Services.Interfaces;
 using Domain_Devenir_Dev_2.Entities;
 using Domain_Devenir_Dev_2.Interfaces;
 using System;
@@ -16,16 +17,23 @@ namespace Application_Devenir_Dev_2.Services
             return await _repository.DeleteUserAsync(id);
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<UserDto?> GetByIdAsync(int id)
         {
             User? user = await _repository.GetByIdAsync(id);
 
             if(user == null)
             {
-                return null;
+                throw new Exception("Erreur ");
             }
 
-            return user;
+            UserDto userToSend = new()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.Username
+            };
+
+            return userToSend;
         }
 
         public async Task<bool> UpdateUserAsync(User userToUpdate, int id)

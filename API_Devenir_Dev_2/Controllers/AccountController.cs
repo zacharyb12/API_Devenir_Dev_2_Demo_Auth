@@ -14,7 +14,7 @@ namespace API_Devenir_Dev_2.Controllers
     public class AccountController(IAccountService _service) : ControllerBase
     {
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginForm loginRequest)
         {
             try
@@ -29,6 +29,27 @@ namespace API_Devenir_Dev_2.Controllers
                 return Ok(token);
 
             }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterForm registerRequest)
+        {
+            try
+            {
+                string? token = await _service.Register(registerRequest);
+
+                if (token == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(token);
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

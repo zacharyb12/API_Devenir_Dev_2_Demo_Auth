@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Application_Devenir_Dev_2.DTOS;
+using Microsoft.AspNetCore.RateLimiting;
 namespace API_Devenir_Dev_2
 {
     public class Program
@@ -26,7 +27,6 @@ namespace API_Devenir_Dev_2
             builder.Services.AddSwaggerGen();
 
             //Ajouter CORS
-
             builder.Services.AddCors(
                 options=>
                 {
@@ -66,7 +66,6 @@ namespace API_Devenir_Dev_2
                        //SigningKey
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:secretKey"]??""))
                    }
-
                 );
              
 
@@ -98,6 +97,20 @@ namespace API_Devenir_Dev_2
             //Pour le jwt
             //1 - je load les paramètres du settings dans un objet
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
+
+            // Rate Limit : limiter le nombre de requette pour un delai
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("fixed", opt =>
+                {
+                    // Delai en minutes - secondes - etc ...
+                    opt.Window = TimeSpan.FromMinutes(1);
+                    // nombre de requettes par minutes
+                    opt.PermitLimit = 10;
+                    // nombre de requettes en attente
+                    opt.QueueLimit = 0;
+                });
+            });
 
 
             // construction de l'application 

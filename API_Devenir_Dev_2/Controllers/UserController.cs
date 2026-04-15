@@ -1,4 +1,5 @@
-﻿using Application_Devenir_Dev_2.Services.Interfaces;
+﻿using Application_Devenir_Dev_2.DTOS;
+using Application_Devenir_Dev_2.Services.Interfaces;
 using Domain_Devenir_Dev_2.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace API_Devenir_Dev_2.Controllers
         {
             try
             {
-                User? user = await _service.GetByIdAsync(id);
+                UserDto? user = await _service.GetByIdAsync(id);
                  
                 if(user == null)
                 {
