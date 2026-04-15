@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/A.API/">
+    <Project Path="API_Devenir_Dev_2/API_Devenir_Dev_2.csproj" />
+  </Folder>
+  <Folder Name="/B.Application/">
+    <Project Path="Application_Devenir_Dev_2/Application_Devenir_Dev_2.csproj" />
+  </Folder>
+  <Folder Name="/C.Infrastructure/">
+    <Project Path="Infrastructure.Devenir_Dev_2/Infrastructure.Devenir_Dev_2.csproj" />
+  </Folder>
+  <Folder Name="/D.Domain/">
+    <Project Path="Domain_Devenir_Dev_2/Domain_Devenir_Dev_2.csproj" />
+  </Folder>
+  <Folder Name="/Éléments de solution/">
+    <File Path="secret.md" />
+  </Folder>
+</Solution>
