@@ -1,4 +1,5 @@
 ﻿using Application_Devenir_Dev_2.DTOS;
+using Application_Devenir_Dev_2.Services.Interfaces;
 using Application_Devenir_Dev_2.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -10,29 +11,26 @@ namespace API_Devenir_Dev_2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(IAccountService _service) : ControllerBase
     {
-        private IOptions<JwtSettings> _jwtOptions;
-        public AccountController(IOptions<JwtSettings> jwtOptions)
-        {
-            _jwtOptions = jwtOptions;
-        }
 
         [HttpPost]
-        public IActionResult Login(LoginForm loginRequest)
+        public async Task<IActionResult> Login(LoginForm loginRequest)
         {
-            //Version sans db
-            if(loginRequest.Login=="Mike" &&  loginRequest.Password== "test")
+            try
             {
-                //Retourner le token en cas de login correct
-                JwtHelpers helpers = new JwtHelpers(_jwtOptions);
-                string jwttoken = helpers.GenerateJwtToken(loginRequest.Login, "Admin");
+                string? token = await _service.Login(loginRequest);
 
-                return Ok(new { token = jwttoken });
-            }
-            else
+                if(token == null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(token);
+
+            }catch(Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

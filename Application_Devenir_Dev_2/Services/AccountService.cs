@@ -14,9 +14,6 @@ namespace Application_Devenir_Dev_2.Services
 {
     public class AccountService(IUserRepository _repository, IOptions<JwtSettings> _jwtOptions ) : IAccountService
     {
-
-
-
         public async Task<string> Login(LoginForm form)
         {
             User? user = await _repository.GetByEmailAsync(form.Login);
